@@ -1,17 +1,26 @@
 {
-    "general" : {
-        "username": "Alan"
+    "general": {
+        "shellPrompt": "Alan~"
     },
-    "style" : {
+    "style": {
         "consoleWidth": "45rem",
         "consoleHeight": "30rem",
         "consoleBorderRadius": "5px",
         "consoleBlurStrength": "10px",
-        "consoleBackgroundColor" : "rgba(141, 141, 141, 0.3)",
-        "consoleUsernameColor": "#d5d6c3",
+        "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",
+        "consolePromptColor": "#d5d6c3",
         "consoleTextColor": "#d5d6c3"
     },
-    "aliases" : [
-
-    ]
+    "aliases": {
+        "clearAliases": [
+            "clear",
+            "clc"
+        ],
+        "redirectAliases": [
+            {
+                "aliases": ["g","goog","google"],
+                "link": "https://www.google.com"
+            }
+        ]
+    }
 }

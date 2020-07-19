@@ -9,13 +9,13 @@ html {
 }
 
 @font-face {
-    font-family: monacoB;
-    src: url("../../static/MonacoB2-Bold.otf");
+  font-family: monacoB;
+  src: url("../../static/MonacoB2-Bold.otf");
 }
 
 @font-face {
-    font-family: monaco;
-    src: url("../../static/MonacoB-Bold.otf");
+  font-family: monaco;
+  src: url("../../static/MonacoB-Bold.otf");
 }
 
 body {
@@ -48,30 +48,37 @@ body {
   -webkit-backdrop-filter: "blur(10px)";
   background-color: rgba(255, 255, 255, 0.3);
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  justify-content: flex-end;
   overflow: scroll;
 }
 
 .shell {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 7px;
-    font-family: monacoB;
-    color: "black"
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-left: 7px;
+  font-family: monacoB;
+  color: "black";
 }
 
 .consoleInput {
-    font-family: monaco;
-    background: transparent;
-    border: none;
-    color: black;
-    width: 85%;
+  font-family: monaco;
+  background: transparent;
+  border: none;
+  color: black;
+  width: 85%;
 }
 
-input:focus, textarea:focus, select:focus{
-    outline: none;
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
 }
 
-
-
-
+.historyItem {
+  font-size: .85rem;
+  font-family: monaco;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  margin-left: 7px;
+}
