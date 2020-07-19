@@ -5,8 +5,8 @@ import "../styles/global.css"
 import settings from "../../static/home-config.json"
 
 export default function Home() {
-  const [inputText, setInputText] = useState("s")
-  const [history, setHistory] = useState([{ key: 1, value: "cd" }])
+  const [inputText, setInputText] = useState("")
+  const [history, setHistory] = useState([])
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
