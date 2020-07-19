@@ -1,0 +1,17 @@
+{
+    "general" : {
+        "username": "Alan"
+    },
+    "style" : {
+        "consoleWidth": "45rem",
+        "consoleHeight": "30rem",
+        "consoleBorderRadius": "5px",
+        "consoleBlurStrength": "10px",
+        "consoleBackgroundColor" : "rgba(141, 141, 141, 0.3)",
+        "consoleUsernameColor": "#d5d6c3",
+        "consoleTextColor": "#d5d6c3"
+    },
+    "aliases" : [
+
+    ]
+}
