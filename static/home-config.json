@@ -1,6 +1,6 @@
 {
     "general": {
-        "shellPrompt": "Alan~"
+        "shellPrompt": "Alanc~"
     },
     "style": {
         "consoleWidth": "45rem",
@@ -15,6 +15,11 @@
         "clearAliases": [
             "clear",
             "clc"
+        ],
+        "newTabAliases" : [
+            "tab",
+            "newTab",
+            "nt"
         ],
         "redirectAliases": [
             {

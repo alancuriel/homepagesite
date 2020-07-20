@@ -10,15 +10,25 @@ export default function Home() {
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
-      runCommand()
+      runCommand();
     }
-  }
+  };
 
   const runCommand = () => {
-    const text = inputText;
+    let text = inputText;
+    const newTabindex = settings.aliases.newTabAliases.findIndex(nta => {
+      return text.startsWith(nta + " ");
+    });
+    
+    if (newTabindex >= 0) {
+      text = text.replace(settings.aliases.newTabAliases[newTabindex] + " ", "");
+    }
+    
     if(settings.aliases.clearAliases.includes(text)) {
       clearConsole();
       return;
+    } else if(settings.aliases.newTabAliases.includes(text)) {
+      window.open(window.location.origin);
     } else {
 
       const i = settings.aliases.redirectAliases.findIndex((e) => {
@@ -26,7 +36,11 @@ export default function Home() {
       });
 
       if (i >= 0) {
-        window.location.href = settings.aliases.redirectAliases[i].link;
+        if(newTabindex >= 0) {
+          window.open(settings.aliases.redirectAliases[i].link);
+        } else {
+          window.location.href = settings.aliases.redirectAliases[i].link;
+        }
       }
 
     }
@@ -42,7 +56,7 @@ export default function Home() {
 
   const addHistoryItem = (text) => {
     setHistory([...history, {
-      key: Math.round(Math.random * 1000000),
+      key: Math.round(Math.random() * 1000000),
       value: text
     }]);
   };
@@ -62,7 +76,7 @@ export default function Home() {
         }}
       >
         {history.map(item => {
-          return <p className="historyItem" key={item.key} style={{
+          return <p className="historyItem" key={item.key.toString()} style={{
             color: settings.style.consoleTextColor
           }}
           >
