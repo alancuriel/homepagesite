@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 import "../styles/global.css"
 
@@ -7,7 +7,11 @@ import settings from "../../static/home-config.json"
 export default function Home() {
   const [inputText, setInputText] = useState("")
   const [history, setHistory] = useState([])
-  
+  const inputEl = useRef(null);
+
+  useEffect( () => {
+    inputEl.current.focus();
+  },[]);
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
@@ -124,6 +128,7 @@ export default function Home() {
             <input
               className="consoleInput"
               spellCheck="false"
+              ref={inputEl}
               style={{ color: settings.style.consoleTextColor }}
               value={inputText}
               onChange={e => setInputText(e.target.value)}
