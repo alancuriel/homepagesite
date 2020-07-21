@@ -16,15 +16,35 @@
             "clear",
             "clc"
         ],
-        "newTabAliases" : [
+        "closeAliases": [
+            "exit"
+        ],
+        "newTabAliases": [
             "tab",
             "newTab",
             "nt"
         ],
+        "newTabFocusedAliases": [
+            "ntf",
+            "tabf",
+            "newtabf"
+        ],
         "redirectAliases": [
             {
-                "aliases": ["g","goog","google"],
+                "aliases": [
+                    "g",
+                    "goog",
+                    "google"
+                ],
                 "link": "https://www.google.com"
+            },
+            {
+                "aliases": [
+                    "r",
+                    "red",
+                    "reddit"
+                ],
+                "link": "https://www.reddit.com"
             }
         ]
     }
