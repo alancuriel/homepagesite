@@ -4,14 +4,32 @@ import "../styles/global.css"
 
 import settings from "../../static/home-config.json"
 
+const HISTORY_KEY = "history"
+
 export default function Home() {
+  const [hasMounted, setHasMounted] = useState(false)
   const [inputText, setInputText] = useState("")
   const [history, setHistory] = useState([])
-  const inputEl = useRef(null);
+  const inputEl = useRef(null)
 
-  useEffect( () => {
-    inputEl.current.focus();
-  },[]);
+  useEffect(() => {
+    inputEl.current.focus()
+    setHasMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (hasMounted) {
+      const stickyValue = window.localStorage.getItem(HISTORY_KEY)
+
+      setHistory(stickyValue !== null ? JSON.parse(stickyValue) : [])
+    }
+  }, [hasMounted])
+
+  useEffect(() => {
+    if (hasMounted) {
+      window.localStorage.setItem(HISTORY_KEY, JSON.stringify(history))
+    }
+  }, [history, hasMounted])
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
@@ -22,6 +40,7 @@ export default function Home() {
   const runCommand = () => {
     let text = inputText
     const historyText = inputText
+    addHistoryItem(settings.general.shellPrompt + " " + historyText)
 
     const newTabindex = settings.aliases.newTabAliases.findIndex(nta => {
       return text.startsWith(nta + " ")
@@ -47,10 +66,9 @@ export default function Home() {
     if (settings.aliases.clearAliases.includes(text)) {
       clearConsole()
       return
-    } else if(settings.aliases.closeAliases.includes(text)) {
-      window.close();
-    } 
-    else if (settings.aliases.newTabAliases.includes(text)) {
+    } else if (settings.aliases.closeAliases.includes(text)) {
+      window.close()
+    } else if (settings.aliases.newTabAliases.includes(text)) {
       window.open(window.location.origin)
     } else {
       const i = settings.aliases.redirectAliases.findIndex(e => {
@@ -70,7 +88,6 @@ export default function Home() {
       }
     }
 
-    addHistoryItem(settings.general.shellPrompt + " " + historyText)
     setInputText("")
   }
 
