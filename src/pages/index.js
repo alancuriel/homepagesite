@@ -6,6 +6,23 @@ import settings from "../../static/home-config.json"
 
 const HISTORY_KEY = "history"
 
+function getAliasList() {
+  var list = settings.aliases.clearAliases.concat(settings.aliases.closeAliases,
+                                                  settings.aliases.newTabAliases,
+                                                  settings.aliases.newTabFocusedAliases);
+  settings.aliases.redirectAliases.forEach(element => {
+    element.aliases.forEach(e => {
+      list = list.concat(e)
+    });
+  });
+
+  return list.sort((a,b) => {
+    return a.length - b.length;
+  });
+}
+
+const aliases = getAliasList();
+
 export default function Home() {
   const [hasMounted, setHasMounted] = useState(false)
   const [inputText, setInputText] = useState("")
@@ -19,9 +36,9 @@ export default function Home() {
 
   useEffect(() => {
     if (hasMounted) {
-      const stickyValue = window.localStorage.getItem(HISTORY_KEY)
+      const historyItems = window.localStorage.getItem(HISTORY_KEY)
 
-      setHistory(stickyValue !== null ? JSON.parse(stickyValue) : [])
+      setHistory(historyItems !== null ? JSON.parse(historyItems) : [])
     }
   }, [hasMounted])
 
@@ -34,6 +51,9 @@ export default function Home() {
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
       runCommand()
+    } else if (e.keyCode === 9) {
+      e.preventDefault();
+      runAutoComplete()
     }
   }
 
@@ -81,7 +101,6 @@ export default function Home() {
         } else if (newTabFocusedIndex >= 0) {
           window.open(window.location.origin)
           window.location.href = settings.aliases.redirectAliases[i].link
-          console.log("flocus")
         } else {
           window.location.href = settings.aliases.redirectAliases[i].link
         }
@@ -89,6 +108,22 @@ export default function Home() {
     }
 
     setInputText("")
+  }
+
+  const runAutoComplete = () => {
+    const text = inputText
+    var arr = text.split(' ')
+
+
+
+    const foundIndex = aliases.findIndex(a => {
+      return (a.startsWith(arr[arr.length-1]) && a !== arr[arr.length-1])
+    })
+    
+    if(foundIndex >= 0 ){
+      arr[arr.length-1] = aliases[foundIndex]
+      setInputText(arr.join(" "))
+    }
   }
 
   const clearConsole = () => {
@@ -143,6 +178,7 @@ export default function Home() {
           >
             {settings.general.shellPrompt}&nbsp;
             <input
+              type="text"
               className="consoleInput"
               spellCheck="false"
               ref={inputEl}
