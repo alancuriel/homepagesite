@@ -5,6 +5,8 @@ import "../styles/global.css"
 import settings from "../../static/home-config.json"
 
 const HISTORY_KEY = "history"
+const HIDDEN_HISTORY_KEY = "hidden_history"
+const MAX_HISTORY_COUNT = 20
 
 function getAliasList() {
   var list = settings.aliases.clearAliases.concat(settings.aliases.closeAliases,
@@ -27,7 +29,9 @@ export default function Home() {
   const [hasMounted, setHasMounted] = useState(false)
   const [inputText, setInputText] = useState("")
   const [history, setHistory] = useState([])
+  const [hiddenHistory, setHiddenHistory] = useState([])
   const inputEl = useRef(null)
+  const historyIndex = useRef(-1)
 
   useEffect(() => {
     inputEl.current.focus()
@@ -37,8 +41,10 @@ export default function Home() {
   useEffect(() => {
     if (hasMounted) {
       const historyItems = window.localStorage.getItem(HISTORY_KEY)
+      const hiddenHistoryItems = window.localStorage.getItem(HIDDEN_HISTORY_KEY)
 
       setHistory(historyItems !== null ? JSON.parse(historyItems) : [])
+      setHiddenHistory(hiddenHistoryItems !== null ? JSON.parse(hiddenHistoryItems): [])
     }
   }, [hasMounted])
 
@@ -48,12 +54,24 @@ export default function Home() {
     }
   }, [history, hasMounted])
 
+  useEffect(() => {
+    if(hasMounted) {
+      window.localStorage.setItem(HIDDEN_HISTORY_KEY, JSON.stringify(hiddenHistory))
+    }
+  },[hasMounted, hiddenHistory])
+
   const keyDownHandler = e => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13) { // Enter
       runCommand()
-    } else if (e.keyCode === 9) {
+    } else if (e.keyCode === 9) { // Tab
       e.preventDefault();
       runAutoComplete()
+    } else if (e.keyCode === 38) { // Arrow Up
+      e.preventDefault();
+      runUpHistory()
+    } else if (e.keyCode === 40) { // Arrow Down
+      e.preventDefault();
+      runDownHistory()
     }
   }
 
@@ -61,6 +79,7 @@ export default function Home() {
     let text = inputText
     const historyText = inputText
     addHistoryItem(settings.general.shellPrompt + " " + historyText)
+    addHiddenHistoryItem(historyText)
 
     const newTabindex = settings.aliases.newTabAliases.findIndex(nta => {
       return text.startsWith(nta + " ")
@@ -107,6 +126,7 @@ export default function Home() {
       }
     }
 
+    historyIndex.current = -1;
     setInputText("")
   }
 
@@ -126,6 +146,37 @@ export default function Home() {
     }
   }
 
+  const runUpHistory = () => {
+    if (hiddenHistory.length > 0) {
+      
+      if ( historyIndex.current + 1 < hiddenHistory.length) {
+        historyIndex.current = historyIndex.current + 1
+      }
+
+      if (historyIndex.current < hiddenHistory.length && historyIndex.current >= 0) {
+        setInputText(hiddenHistory[hiddenHistory.length - 1 - historyIndex.current])
+      }
+    }
+
+  }
+
+  const runDownHistory = () => {
+
+    if (hiddenHistory.length > 0) {
+
+      if ( historyIndex.current - 1 >= -1) {
+        historyIndex.current = historyIndex.current - 1
+      }
+
+      if (historyIndex.current >= 0 ) {
+        setInputText(hiddenHistory[hiddenHistory.length - 1 - historyIndex.current])
+      } else if (historyIndex.current === -1) {
+        setInputText("")
+      }
+
+    }
+  }
+
   const clearConsole = () => {
     setHistory([])
     setInputText("")
@@ -139,6 +190,15 @@ export default function Home() {
         value: text,
       },
     ])
+  }
+
+  const addHiddenHistoryItem = (text) => {
+    var arr = [...hiddenHistory]
+    if(arr.length + 1 > MAX_HISTORY_COUNT) {
+      console.log(arr.splice(0,1)[0] + " removed from history")
+    }
+    arr.push(text)
+    setHiddenHistory(arr)
   }
 
   return (
