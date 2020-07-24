@@ -9,21 +9,23 @@ const HIDDEN_HISTORY_KEY = "hidden_history"
 const MAX_HISTORY_COUNT = 20
 
 function getAliasList() {
-  var list = settings.aliases.clearAliases.concat(settings.aliases.closeAliases,
-                                                  settings.aliases.newTabAliases,
-                                                  settings.aliases.newTabFocusedAliases);
+  var list = settings.aliases.clearAliases.concat(
+    settings.aliases.closeAliases,
+    settings.aliases.newTabAliases,
+    settings.aliases.newTabFocusedAliases
+  )
   settings.aliases.redirectAliases.forEach(element => {
     element.aliases.forEach(e => {
       list = list.concat(e)
-    });
-  });
+    })
+  })
 
-  return list.sort((a,b) => {
-    return a.length - b.length;
-  });
+  return list.sort((a, b) => {
+    return a.length - b.length
+  })
 }
 
-const aliases = getAliasList();
+const aliases = getAliasList()
 
 export default function Home() {
   const [hasMounted, setHasMounted] = useState(false)
@@ -44,7 +46,9 @@ export default function Home() {
       const hiddenHistoryItems = window.localStorage.getItem(HIDDEN_HISTORY_KEY)
 
       setHistory(historyItems !== null ? JSON.parse(historyItems) : [])
-      setHiddenHistory(hiddenHistoryItems !== null ? JSON.parse(hiddenHistoryItems): [])
+      setHiddenHistory(
+        hiddenHistoryItems !== null ? JSON.parse(hiddenHistoryItems) : []
+      )
     }
   }, [hasMounted])
 
@@ -55,22 +59,29 @@ export default function Home() {
   }, [history, hasMounted])
 
   useEffect(() => {
-    if(hasMounted) {
-      window.localStorage.setItem(HIDDEN_HISTORY_KEY, JSON.stringify(hiddenHistory))
+    if (hasMounted) {
+      window.localStorage.setItem(
+        HIDDEN_HISTORY_KEY,
+        JSON.stringify(hiddenHistory)
+      )
     }
-  },[hasMounted, hiddenHistory])
+  }, [hasMounted, hiddenHistory])
 
   const keyDownHandler = e => {
-    if (e.keyCode === 13) { // Enter
+    if (e.keyCode === 13) {
+      // Enter
       runCommand()
-    } else if (e.keyCode === 9) { // Tab
-      e.preventDefault();
+    } else if (e.keyCode === 9) {
+      // Tab
+      e.preventDefault()
       runAutoComplete()
-    } else if (e.keyCode === 38) { // Arrow Up
-      e.preventDefault();
+    } else if (e.keyCode === 38) {
+      // Arrow Up
+      e.preventDefault()
       runUpHistory()
-    } else if (e.keyCode === 40) { // Arrow Down
-      e.preventDefault();
+    } else if (e.keyCode === 40) {
+      // Arrow Down
+      e.preventDefault()
       runDownHistory()
     }
   }
@@ -126,54 +137,54 @@ export default function Home() {
       }
     }
 
-    historyIndex.current = -1;
+    historyIndex.current = -1
     setInputText("")
   }
 
   const runAutoComplete = () => {
     const text = inputText
-    var arr = text.split(' ')
-
-
+    var arr = text.split(" ")
 
     const foundIndex = aliases.findIndex(a => {
-      return (a.startsWith(arr[arr.length-1]) && a !== arr[arr.length-1])
+      return a.startsWith(arr[arr.length - 1]) && a !== arr[arr.length - 1]
     })
-    
-    if(foundIndex >= 0 ){
-      arr[arr.length-1] = aliases[foundIndex]
+
+    if (foundIndex >= 0) {
+      arr[arr.length - 1] = aliases[foundIndex]
       setInputText(arr.join(" "))
     }
   }
 
   const runUpHistory = () => {
     if (hiddenHistory.length > 0) {
-      
-      if ( historyIndex.current + 1 < hiddenHistory.length) {
+      if (historyIndex.current + 1 < hiddenHistory.length) {
         historyIndex.current = historyIndex.current + 1
       }
 
-      if (historyIndex.current < hiddenHistory.length && historyIndex.current >= 0) {
-        setInputText(hiddenHistory[hiddenHistory.length - 1 - historyIndex.current])
+      if (
+        historyIndex.current < hiddenHistory.length &&
+        historyIndex.current >= 0
+      ) {
+        setInputText(
+          hiddenHistory[hiddenHistory.length - 1 - historyIndex.current]
+        )
       }
     }
-
   }
 
   const runDownHistory = () => {
-
     if (hiddenHistory.length > 0) {
-
-      if ( historyIndex.current - 1 >= -1) {
+      if (historyIndex.current - 1 >= -1) {
         historyIndex.current = historyIndex.current - 1
       }
 
-      if (historyIndex.current >= 0 ) {
-        setInputText(hiddenHistory[hiddenHistory.length - 1 - historyIndex.current])
+      if (historyIndex.current >= 0) {
+        setInputText(
+          hiddenHistory[hiddenHistory.length - 1 - historyIndex.current]
+        )
       } else if (historyIndex.current === -1) {
         setInputText("")
       }
-
     }
   }
 
@@ -192,10 +203,10 @@ export default function Home() {
     ])
   }
 
-  const addHiddenHistoryItem = (text) => {
+  const addHiddenHistoryItem = text => {
     var arr = [...hiddenHistory]
-    if(arr.length + 1 > MAX_HISTORY_COUNT) {
-      console.log(arr.splice(0,1)[0] + " removed from history")
+    if (arr.length + 1 > MAX_HISTORY_COUNT) {
+      console.log(arr.splice(0, 1)[0] + " removed from history")
     }
     arr.push(text)
     setHiddenHistory(arr)
@@ -216,40 +227,47 @@ export default function Home() {
             WebkitBackdropFilter:
               "blur(" + settings.style.consoleBlurStrength + ")",
             backgroundColor: settings.style.consoleBackgroundColor,
+            scrollbarColor: settings.style.consoleScrollbarColor,
+            msScrollbarHighlightColor: settings.style.consoleScrollbarHighlightColor
           }}
         >
-          {history.map(item => {
-            return (
+          <div>Title</div>
+          <div className="console-container">
+            <div className="console-item-container">
+              {history.map(item => {
+                return (
+                  <p
+                    className="historyItem"
+                    key={item.key.toString()}
+                    style={{
+                      color: settings.style.consoleTextColor,
+                    }}
+                  >
+                    {item.value}
+                  </p>
+                )
+              })}
+
               <p
-                className="historyItem"
-                key={item.key.toString()}
+                className="shell"
                 style={{
-                  color: settings.style.consoleTextColor,
+                  color: settings.style.consolePromptColor,
                 }}
               >
-                {item.value}
+                {settings.general.shellPrompt}&nbsp;
+                <input
+                  type="text"
+                  className="consoleInput"
+                  spellCheck="false"
+                  ref={inputEl}
+                  style={{ color: settings.style.consoleTextColor }}
+                  value={inputText}
+                  onChange={e => setInputText(e.target.value)}
+                  onKeyDown={keyDownHandler}
+                ></input>
               </p>
-            )
-          })}
-
-          <p
-            className="shell"
-            style={{
-              color: settings.style.consolePromptColor,
-            }}
-          >
-            {settings.general.shellPrompt}&nbsp;
-            <input
-              type="text"
-              className="consoleInput"
-              spellCheck="false"
-              ref={inputEl}
-              style={{ color: settings.style.consoleTextColor }}
-              value={inputText}
-              onChange={e => setInputText(e.target.value)}
-              onKeyDown={keyDownHandler}
-            ></input>
-          </p>
+            </div>
+          </div>
         </div>
       )}
     </div>

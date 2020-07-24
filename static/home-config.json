@@ -9,7 +9,9 @@
         "consoleBlurStrength": "10px",
         "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",
         "consolePromptColor": "#d5d6c3",
-        "consoleTextColor": "#d5d6c3"
+        "consoleTextColor": "#d5d6c3",
+        "consoleScrollbarColor": "#888",
+        "consoleScrollbarHighlightColor": "#555"
     },
     "aliases": {
         "clearAliases": [
