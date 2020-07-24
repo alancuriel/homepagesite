@@ -41,15 +41,16 @@ body {
 
 .content {
   position: relative;
-  width: 45rem;
-  height: 30rem;
+  max-width: 45rem;
+  max-height: 30rem;
   border-radius: 5px;
   backdrop-filter: "blur(10px)";
   -webkit-backdrop-filter: "blur(10px)";
   background-color: rgba(255, 255, 255, 0.3);
-  display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: flex-end;
+  overflow: scroll;
 }
 
 .shell {
