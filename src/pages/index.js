@@ -207,6 +207,8 @@ export default function Home() {
         <div
           className="content"
           style={{
+            width: settings.style.consoleWidth,
+            height: settings.style.consoleHeight,
             maxWidth: settings.style.consoleWidth,
             maxHeight: settings.style.consoleHeight,
             borderRadius: settings.style.consoleBorderRadius,
