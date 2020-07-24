@@ -2,30 +2,11 @@ import React, { useState, useEffect, useRef } from "react"
 
 import "../styles/global.css"
 
-import settings from "../../static/home-config.json"
+// import settings from "../../static/home-config.json"
 
 const HISTORY_KEY = "history"
 const HIDDEN_HISTORY_KEY = "hidden_history"
 const MAX_HISTORY_COUNT = 20
-
-function getAliasList() {
-  var list = settings.aliases.clearAliases.concat(
-    settings.aliases.closeAliases,
-    settings.aliases.newTabAliases,
-    settings.aliases.newTabFocusedAliases
-  )
-  settings.aliases.redirectAliases.forEach(element => {
-    element.aliases.forEach(e => {
-      list = list.concat(e)
-    })
-  })
-
-  return list.sort((a, b) => {
-    return a.length - b.length
-  })
-}
-
-const aliases = getAliasList()
 
 export default function Home() {
   const [hasMounted, setHasMounted] = useState(false)
@@ -34,9 +15,13 @@ export default function Home() {
   const [hiddenHistory, setHiddenHistory] = useState([])
   const inputEl = useRef(null)
   const historyIndex = useRef(-1)
+  const [settings, setSettings] = useState({})
+  const [aliases, setAliases] = useState([])
 
   useEffect(() => {
-    inputEl.current.focus()
+    fetch(window.location.origin + "/home-config.json")
+      .then(x => x.json())
+      .then(x => setSettings(x))
     setHasMounted(true)
   }, [])
 
@@ -66,6 +51,28 @@ export default function Home() {
       )
     }
   }, [hasMounted, hiddenHistory])
+
+  useEffect(() => {
+    if (hasMounted && settings.style) {
+      inputEl.current.focus()
+      setAliases(() => {
+        var list = settings.aliases.clearAliases.concat(
+          settings.aliases.closeAliases,
+          settings.aliases.newTabAliases,
+          settings.aliases.newTabFocusedAliases
+        )
+        settings.aliases.redirectAliases.forEach(element => {
+          element.aliases.forEach(e => {
+            list = list.concat(e)
+          })
+        })
+
+        return list.sort((a, b) => {
+          return a.length - b.length
+        })
+      })
+    }
+  }, [settings, hasMounted])
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
@@ -214,7 +221,7 @@ export default function Home() {
 
   return (
     <div className="container">
-      {settings && (
+      {settings.style && (
         <div
           className="content"
           style={{
@@ -228,10 +235,21 @@ export default function Home() {
               "blur(" + settings.style.consoleBlurStrength + ")",
             backgroundColor: settings.style.consoleBackgroundColor,
             scrollbarColor: settings.style.consoleScrollbarColor,
-            msScrollbarHighlightColor: settings.style.consoleScrollbarHighlightColor
+            msScrollbarHighlightColor:
+              settings.style.consoleScrollbarHighlightColor,
           }}
         >
-          <div>Title</div>
+          <div className="console-top-bar" style={{
+            background: settings.style.consoleTopBarColor
+          }}>
+            <p className="console-title"
+              style={{
+              color: settings.style.consoleTitleColor,
+              fontSize: settings.style.consoleTitleFontSize
+            }}>
+              {settings.general.consoleTitle}
+            </p>
+          </div>
           <div className="console-container">
             <div className="console-item-container">
               {history.map(item => {

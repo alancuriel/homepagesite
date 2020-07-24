@@ -50,6 +50,20 @@ body {
   flex-direction: column;
 }
 
+.console-top-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: rgba(214, 214, 214, 0.3);
+}
+
+.console-title {
+    font-family: monaco;
+    margin: 5px auto;
+    font-size: .85rem;
+    letter-spacing: .1rem;
+}
+
 .console-container {
   flex: 1;
   overflow-y: auto;
