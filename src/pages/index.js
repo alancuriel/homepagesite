@@ -91,6 +91,18 @@ export default function Home() {
     }
   }
 
+  // const runCommand2 = () => {
+  //   var text = inputText.tr
+  //   const historyText = inputText
+  //   addHistory(historyText)
+    
+  // }
+
+  // const addHistory = text => {
+  //   addHistoryItem(settings.general.shellPrompt + " " + text)
+  //   addHiddenHistoryItem(text)
+  // }
+
   const runCommand = () => {
     let text = inputText
     const historyText = inputText
@@ -267,6 +279,8 @@ export default function Home() {
             height: settings.style.consoleHeight,
             maxWidth: settings.style.consoleWidth,
             maxHeight: settings.style.consoleHeight,
+            minWidth: settings.style.consoleWidth,
+            minHeight: settings.style.consoleHeight,
             borderRadius: settings.style.consoleBorderRadius,
             backdropFilter: "blur(" + settings.style.consoleBlurStrength + ")",
             WebkitBackdropFilter:

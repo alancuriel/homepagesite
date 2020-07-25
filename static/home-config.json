@@ -5,15 +5,15 @@
     },
     "style": {
         "consoleWidth": "45rem",
-        "consoleHeight": "30rem",
-        "consoleBorderRadius": "5px",
+        "consoleHeight": "20rem",
+        "consoleBorderRadius": "15px",
         "consoleBlurStrength": "10px",
         "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",
         "consolePromptColor": "#d5d6c3",
         "consoleTextColor": "#d5d6c3",
         "consoleScrollbarColor": "#888",
         "consoleScrollbarHighlightColor": "#555",
-        "consoleTopBarColor" : "rgb(213, 214, 195, 0.5)",
+        "consoleTopBarColor" : "rgb(213, 214, 195, 0.1)",
         "consoleTitleFontSize" : "0.85rem",
         "consoleTitleColor" : "#d5d6c3"
     },
