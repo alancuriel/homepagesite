@@ -13,7 +13,7 @@
         "consoleTextColor": "#d5d6c3",
         "consoleScrollbarColor": "#888",
         "consoleScrollbarHighlightColor": "#555",
-        "consoleTopBarColor" : "rgb(213, 214, 195, 0.5);",
+        "consoleTopBarColor" : "rgb(213, 214, 195, 0.5)",
         "consoleTitleFontSize" : "0.85rem",
         "consoleTitleColor" : "#d5d6c3"
     },

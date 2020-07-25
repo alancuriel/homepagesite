@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react"
 
 import "../styles/global.css"
 
-// import settings from "../../static/home-config.json"
-
 const HISTORY_KEY = "history"
 const HIDDEN_HISTORY_KEY = "hidden_history"
 const MAX_HISTORY_COUNT = 20
@@ -219,6 +217,46 @@ export default function Home() {
     setHiddenHistory(arr)
   }
 
+  const getCurrentTime = () => {
+    var time = new Date()
+    var hour = time.getHours()
+    var ampm = "pm"
+
+    if (hour === 0) {
+      hour = 12
+      ampm = "am"
+    } else if (hour === 12) {
+      ampm = "pm"
+    } else if (hour < 12) {
+      ampm = "am"
+    } else {
+      hour = hour % 12
+    }
+    var min = time.getMinutes()
+    if (min < 10) {
+      min = "0" + min
+    }
+
+    var output =
+      hour +
+      ":" +
+      min +
+      ampm +
+      " " +
+      time.getMonth() +
+      "/" +
+      time.getDay() +
+      "/" +
+      time.getFullYear()
+    return output
+  }
+
+  const getDay = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday"]
+
+    return days[new Date().getDay()]
+  }
+
   return (
     <div className="container">
       {settings.style && (
@@ -239,15 +277,30 @@ export default function Home() {
               settings.style.consoleScrollbarHighlightColor,
           }}
         >
-          <div className="console-top-bar" style={{
-            background: settings.style.consoleTopBarColor
-          }}>
-            <p className="console-title"
+          <div
+            className="console-top-bar"
+            style={{
+              background: settings.style.consoleTopBarColor,
+            }}
+          >
+            <p
+              className="console-title"
               style={{
-              color: settings.style.consoleTitleColor,
-              fontSize: settings.style.consoleTitleFontSize
-            }}>
-              {settings.general.consoleTitle}
+                color: settings.style.consoleTitleColor,
+                fontSize: settings.style.consoleTitleFontSize,
+              }}
+            >
+              {getCurrentTime()}
+            </p>
+
+            <p
+              className="console-title"
+              style={{
+                color: settings.style.consoleTitleColor,
+                fontSize: settings.style.consoleTitleFontSize,
+              }}
+            >
+              {getDay()}
             </p>
           </div>
           <div className="console-container">
