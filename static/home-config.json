@@ -5,7 +5,7 @@
     },
     "style": {
         "consoleWidth": "45rem",
-        "consoleHeight": "20rem",
+        "consoleHeight": "15rem",
         "consoleBorderRadius": "15px",
         "consoleBlurStrength": "10px",
         "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",
@@ -34,6 +34,16 @@
             "ntf",
             "tabf",
             "newtabf"
+        ],
+        "searchAliases" : [
+            {
+                "alias": "gs",
+                "link": "https://www.google.com/search?q="
+            },
+            {
+                "alias": "yt",
+                "link": "https://www.youtube.com/results?search_query="
+            }
         ],
         "redirectAliases": [
             {

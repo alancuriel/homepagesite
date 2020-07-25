@@ -65,6 +65,10 @@ export default function Home() {
           })
         })
 
+        settings.aliases.searchAliases.forEach(element => {
+          list = list.concat(element.alias)
+        })
+
         return list.sort((a, b) => {
           return a.length - b.length
         })
@@ -119,6 +123,18 @@ export default function Home() {
       }
     )
 
+    const searchAliasesIndex = settings.aliases.searchAliases.findIndex(
+      sa => {
+        console.log(sa.alias)
+        return text.startsWith(sa.alias + " ")
+      }
+    )
+
+    if (searchAliasesIndex >= 0) {
+      console.log("found")
+      text = text.replace(settings.aliases.searchAliases[searchAliasesIndex].alias + " ", "") 
+    }
+
     if (newTabindex >= 0) {
       text = text.replace(settings.aliases.newTabAliases[newTabindex] + " ", "")
     }
@@ -137,7 +153,10 @@ export default function Home() {
       window.close()
     } else if (settings.aliases.newTabAliases.includes(text)) {
       window.open(window.location.origin)
+    } else if (searchAliasesIndex >= 0) {
+      window.location.href = settings.aliases.searchAliases[searchAliasesIndex].link + text
     } else {
+
       const i = settings.aliases.redirectAliases.findIndex(e => {
         return e.aliases.includes(text)
       })
@@ -255,9 +274,9 @@ export default function Home() {
       min +
       ampm +
       " " +
-      time.getMonth() +
+      (time.getMonth() + 1) +
       "/" +
-      time.getDay() +
+      time.getDate() +
       "/" +
       time.getFullYear()
     return output
@@ -295,6 +314,8 @@ export default function Home() {
             className="console-top-bar"
             style={{
               background: settings.style.consoleTopBarColor,
+              borderTopLeftRadius: settings.style.consoleBorderRadius,
+              borderTopRightRadius: settings.style.consoleBorderRadius
             }}
           >
             <p
