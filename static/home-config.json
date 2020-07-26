@@ -45,6 +45,10 @@
             {
                 "alias": "yt",
                 "link": "https://www.youtube.com/results?search_query="
+            },
+            {
+                "alias": "url",
+                "link": "https://"
             }
         ],
         "redirectAliases": [
