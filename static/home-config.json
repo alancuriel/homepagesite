@@ -6,6 +6,8 @@
     "style": {
         "consoleWidth": "45rem",
         "consoleHeight": "15rem",
+        "consoleXOffset": "0px",
+        "consoleYOffset" : "0px",
         "consoleBorderRadius": "15px",
         "consoleBlurStrength": "10px",
         "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",

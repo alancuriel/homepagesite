@@ -300,6 +300,8 @@ export default function Home() {
             maxHeight: settings.style.consoleHeight,
             minWidth: settings.style.consoleWidth,
             minHeight: settings.style.consoleHeight,
+            marginLeft: settings.style.consoleXOffset,
+            marginTop: settings.style.consoleYOffset,
             borderRadius: settings.style.consoleBorderRadius,
             backdropFilter: "blur(" + settings.style.consoleBlurStrength + ")",
             WebkitBackdropFilter:
