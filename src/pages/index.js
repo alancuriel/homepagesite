@@ -2,9 +2,34 @@ import React, { useState, useEffect, useRef } from "react"
 
 import "../styles/global.css"
 
+import settings from "../../static/home-config.json"
+
 const HISTORY_KEY = "history"
 const HIDDEN_HISTORY_KEY = "hidden_history"
 const MAX_HISTORY_COUNT = 20
+
+const getAliases = () => {
+  var list = settings.aliases.clearAliases.concat(
+    settings.aliases.closeAliases,
+    settings.aliases.newTabAliases,
+    settings.aliases.newTabFocusedAliases
+  )
+  settings.aliases.redirectAliases.forEach(element => {
+    element.aliases.forEach(e => {
+      list = list.concat(e)
+    })
+  })
+
+  settings.aliases.searchAliases.forEach(element => {
+    list = list.concat(element.alias)
+  })
+
+  return list.sort((a, b) => {
+    return a.length - b.length
+  })
+}
+
+const aliases = getAliases()
 
 export default function Home() {
   const [hasMounted, setHasMounted] = useState(false)
@@ -13,13 +38,8 @@ export default function Home() {
   const [hiddenHistory, setHiddenHistory] = useState([])
   const inputEl = useRef(null)
   const historyIndex = useRef(-1)
-  const [settings, setSettings] = useState({})
-  const [aliases, setAliases] = useState([])
 
   useEffect(() => {
-    fetch(window.location.origin + "/home-config.json")
-      .then(x => x.json())
-      .then(x => setSettings(x))
     setHasMounted(true)
   }, [])
 
@@ -32,6 +52,7 @@ export default function Home() {
       setHiddenHistory(
         hiddenHistoryItems !== null ? JSON.parse(hiddenHistoryItems) : []
       )
+      inputEl.current.focus()
     }
   }, [hasMounted])
 
@@ -50,31 +71,6 @@ export default function Home() {
     }
   }, [hasMounted, hiddenHistory])
 
-  useEffect(() => {
-    if (hasMounted && settings.style) {
-      inputEl.current.focus()
-      setAliases(() => {
-        var list = settings.aliases.clearAliases.concat(
-          settings.aliases.closeAliases,
-          settings.aliases.newTabAliases,
-          settings.aliases.newTabFocusedAliases
-        )
-        settings.aliases.redirectAliases.forEach(element => {
-          element.aliases.forEach(e => {
-            list = list.concat(e)
-          })
-        })
-
-        settings.aliases.searchAliases.forEach(element => {
-          list = list.concat(element.alias)
-        })
-
-        return list.sort((a, b) => {
-          return a.length - b.length
-        })
-      })
-    }
-  }, [settings, hasMounted])
 
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
@@ -99,7 +95,7 @@ export default function Home() {
   //   var text = inputText.tr
   //   const historyText = inputText
   //   addHistory(historyText)
-    
+
   // }
 
   // const addHistory = text => {
@@ -123,16 +119,17 @@ export default function Home() {
       }
     )
 
-    const searchAliasesIndex = settings.aliases.searchAliases.findIndex(
-      sa => {
-        console.log(sa.alias)
-        return text.startsWith(sa.alias + " ")
-      }
-    )
+    const searchAliasesIndex = settings.aliases.searchAliases.findIndex(sa => {
+      console.log(sa.alias)
+      return text.startsWith(sa.alias + " ")
+    })
 
     if (searchAliasesIndex >= 0) {
       console.log("found")
-      text = text.replace(settings.aliases.searchAliases[searchAliasesIndex].alias + " ", "") 
+      text = text.replace(
+        settings.aliases.searchAliases[searchAliasesIndex].alias + " ",
+        ""
+      )
     }
 
     if (newTabindex >= 0) {
@@ -154,9 +151,9 @@ export default function Home() {
     } else if (settings.aliases.newTabAliases.includes(text)) {
       window.open(window.location.origin)
     } else if (searchAliasesIndex >= 0) {
-      window.location.href = settings.aliases.searchAliases[searchAliasesIndex].link + text
+      window.location.href =
+        settings.aliases.searchAliases[searchAliasesIndex].link + text
     } else {
-
       const i = settings.aliases.redirectAliases.findIndex(e => {
         return e.aliases.includes(text)
       })
@@ -283,7 +280,15 @@ export default function Home() {
   }
 
   const getDay = () => {
-    const days = ["Sunday", "Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday"]
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wenesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ]
 
     return days[new Date().getDay()]
   }
@@ -317,7 +322,7 @@ export default function Home() {
             style={{
               background: settings.style.consoleTopBarColor,
               borderTopLeftRadius: settings.style.consoleBorderRadius,
-              borderTopRightRadius: settings.style.consoleBorderRadius
+              borderTopRightRadius: settings.style.consoleBorderRadius,
             }}
           >
             <p

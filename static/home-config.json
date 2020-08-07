@@ -4,18 +4,18 @@
         "consoleTitle": "Home"
     },
     "style": {
-        "consoleWidth": "45rem",
+        "consoleWidth": "35rem",
         "consoleHeight": "15rem",
         "consoleXOffset": "0px",
-        "consoleYOffset" : "0px",
-        "consoleBorderRadius": "15px",
-        "consoleBlurStrength": "10px",
-        "consoleBackgroundColor": "rgba(141, 141, 141, 0.3)",
+        "consoleYOffset" : "-175px",
+        "consoleBorderRadius": "5px",
+        "consoleBlurStrength": "5px",
+        "consoleBackgroundColor": "rgb(188, 175, 230, 0.3)",
         "consolePromptColor": "#d5d6c3",
         "consoleTextColor": "#d5d6c3",
         "consoleScrollbarColor": "#888",
         "consoleScrollbarHighlightColor": "#555",
-        "consoleTopBarColor" : "rgb(213, 214, 195, 0.1)",
+        "consoleTopBarColor" : "rgb(213, 214, 195, 0)",
         "consoleTitleFontSize" : "0.85rem",
         "consoleTitleColor" : "#d5d6c3"
     },
@@ -25,7 +25,8 @@
             "clc"
         ],
         "closeAliases": [
-            "exit"
+            "exit",
+            "close"
         ],
         "newTabAliases": [
             "tab",
@@ -43,12 +44,16 @@
                 "link": "https://www.google.com/search?q="
             },
             {
-                "alias": "yt",
+                "alias": "yts",
                 "link": "https://www.youtube.com/results?search_query="
             },
             {
                 "alias": "url",
                 "link": "https://"
+            },
+            {
+                "alias": "9as",
+                "link": "https://9anime.to/search?keyword="
             }
         ],
         "redirectAliases": [
@@ -67,6 +72,52 @@
                     "reddit"
                 ],
                 "link": "https://www.reddit.com"
+            },
+            {
+                "aliases": [
+                    "yt",
+                    "youtube"
+                ],
+                "link": "https://www.youtube.com/feed/subscriptions"
+            },
+            {
+                "aliases": [
+                    "gh",
+                    "git",
+                    "github"
+                ],
+                "link": "https://github.com/alancuriel"
+            },
+            {
+                "aliases": [
+                    "ttv",
+                    "twitch"
+                ],
+                "link": "https://www.twitch.tv/directory/following"
+            },
+            {
+                "aliases": [
+                    "canvas",
+                    "canv",
+                    "wpic"
+                ],
+                "link" : "https://canvas.wpi.edu/"
+            },
+            {
+                "aliases": [
+                    "gmail",
+                    "gm",
+                    "googlemail"
+                ],
+                "link" : "https://mail.google.com/mail/"
+            },
+            {
+                "aliases": [
+                    "gdrive",
+                    "gd",
+                    "googledrive"
+                ],
+                "link" : "https://drive.google.com/drive/my-drive"
             }
         ]
     }

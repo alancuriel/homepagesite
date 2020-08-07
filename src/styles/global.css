@@ -10,12 +10,12 @@ background-color: #f9f9f9;
 
 @font-face {
   font-family: monacoB;
-  src: url("../../static/MonacoB2-Bold.otf");
+  src: url("../../static/Courier\ New\ Bold.ttf");
 }
 
 @font-face {
   font-family: monaco;
-  src: url("../../static/MonacoB-Bold.otf");
+  src: url("../../static/Courier\ New.ttf");
 }
 
 body {
@@ -24,7 +24,7 @@ body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("../../static/japan.jpeg");
+  background-image: url("../../static/ocean.png");
   background-attachment: fixed;
   background-size: cover;
   display: flex;
@@ -58,13 +58,13 @@ body {
 }
 
 .console-title {
-    font-family: monaco;
+    font-family: monacoB;
     margin-right: 8px;
     margin-left: 8px;
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: .85rem;
-    letter-spacing: .1rem;
+    letter-spacing: .05rem;
 }
 
 .console-container {
@@ -86,7 +86,7 @@ body {
   margin-top: 0px;
   margin-bottom: 5px;
   margin-left: 8px;
-  font-family: monacoB;
+  font-family: monaco;
   color: "black";
 }
 
