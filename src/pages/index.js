@@ -120,7 +120,6 @@ export default function Home() {
     )
 
     const searchAliasesIndex = settings.aliases.searchAliases.findIndex(sa => {
-      console.log(sa.alias)
       return text.startsWith(sa.alias + " ")
     })
 
@@ -145,8 +144,10 @@ export default function Home() {
 
     if (settings.aliases.clearAliases.includes(text)) {
       clearConsole()
-      return
-    } else if (settings.aliases.closeAliases.includes(text)) {
+    } else if(text === "help") {
+      console.log("help")
+      helpInfo()
+    }else if (settings.aliases.closeAliases.includes(text)) {
       window.close()
     } else if (settings.aliases.newTabAliases.includes(text)) {
       window.open(window.location.origin)
@@ -172,6 +173,30 @@ export default function Home() {
 
     historyIndex.current = -1
     setInputText("")
+  }
+
+  const helpInfo = () => {
+    var helpLines = []
+    helpLines.push("To clear the history you can type the following:")
+    helpLines.push(settings.aliases.clearAliases.join(" , "))
+    helpLines.push("------------------------------------")
+    helpLines.push("Type any of the following to go their respective website:")
+
+    settings.aliases.redirectAliases.forEach(i => {
+      helpLines.push(i.aliases.join(" , ") + " -->  " + i.link)
+    })
+    
+    helpLines.push("------------------------------------")
+
+    helpLines.push("Type the following followed by text to look for something in that website:")
+
+    settings.aliases.searchAliases.forEach(i => {
+      if (i.alias !== "url") {
+        helpLines.push(i.alias +"  ---searches in---> " + new URL(i.link).hostname)
+      }
+    })
+
+    addHistoryItems( helpLines)
   }
 
   const runAutoComplete = () => {
@@ -223,7 +248,6 @@ export default function Home() {
 
   const clearConsole = () => {
     setHistory([])
-    setInputText("")
   }
 
   const addHistoryItem = text => {
@@ -234,6 +258,14 @@ export default function Home() {
         value: text,
       },
     ])
+  }
+
+  const addHistoryItems = items => {
+    setHistory([...history,
+    ...items.map(i =>{ return {
+      key: Math.round(Math.random() * 1000000),
+      value: i,
+    }})])
   }
 
   const addHiddenHistoryItem = text => {

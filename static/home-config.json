@@ -114,7 +114,6 @@
             {
                 "aliases": [
                     "gdrive",
-                    "gd",
                     "googledrive"
                 ],
                 "link" : "https://drive.google.com/drive/my-drive"
