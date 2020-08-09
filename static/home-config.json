@@ -39,15 +39,15 @@
         ],
         "searchAliases" : [
             {
-                "alias": "gs",
+                "alias": ["gs"],
                 "link": "https://www.google.com/search?q="
             },
             {
-                "alias": "yt",
+                "alias": ["yt"],
                 "link": "https://www.youtube.com/results?search_query="
             },
             {
-                "alias": "url",
+                "alias": ["url"],
                 "link": "https://"
             }
         ],
@@ -58,7 +58,19 @@
                     "goog",
                     "google"
                 ],
-                "link": "https://www.google.com"
+                "link": "https://www.google.com",
+                "subAliases": [
+                    {
+                        "subAlias": "-m",
+                        "dir": "/mail",
+                        "newUrl": ""
+                    },
+                    {
+                        "subAlias": "-d",
+                        "dir": "",
+                        "newUrl": "https://drive.google.com/drive/my-drive"
+                    }
+                ]
             },
             {
                 "aliases": [
