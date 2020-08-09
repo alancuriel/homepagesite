@@ -40,19 +40,19 @@
         ],
         "searchAliases" : [
             {
-                "alias": "gs",
+                "alias": ["gs"],
                 "link": "https://www.google.com/search?q="
             },
             {
-                "alias": "yts",
+                "alias": ["yts"],
                 "link": "https://www.youtube.com/results?search_query="
             },
             {
-                "alias": "url",
+                "alias": ["url"],
                 "link": "https://"
             },
             {
-                "alias": "9as",
+                "alias": ["9as"],
                 "link": "https://9anime.to/search?keyword="
             }
         ],
@@ -63,7 +63,19 @@
                     "goog",
                     "google"
                 ],
-                "link": "https://www.google.com"
+                "link": "https://www.google.com",
+                "subAliases": [
+                    {
+                        "subAlias" : "-m",
+                        "dir" : "/mail",
+                        "newUrl": ""
+                    }, 
+                    {
+                        "subAlias": "-d",
+                        "dir" : "",
+                        "newUrl": "https://drive.google.com/drive/my-drive"
+                    }
+                ]
             },
             {
                 "aliases": [
@@ -101,7 +113,7 @@
                     "canv",
                     "wpic"
                 ],
-                "link" : "https://canvas.wpi.edu/"
+                "link" : "https://canvas.wpi.edu"
             },
             {
                 "aliases": [
@@ -109,7 +121,7 @@
                     "gm",
                     "googlemail"
                 ],
-                "link" : "https://mail.google.com/mail/"
+                "link" : "https://mail.google.com/mail"
             },
             {
                 "aliases": [

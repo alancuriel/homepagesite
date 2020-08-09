@@ -71,11 +71,10 @@ export default function Home() {
     }
   }, [hasMounted, hiddenHistory])
 
-
   const keyDownHandler = e => {
     if (e.keyCode === 13) {
       // Enter
-      runCommand()
+      runCommand2()
     } else if (e.keyCode === 9) {
       // Tab
       e.preventDefault()
@@ -91,88 +90,117 @@ export default function Home() {
     }
   }
 
-  // const runCommand2 = () => {
-  //   var text = inputText.tr
-  //   const historyText = inputText
-  //   addHistory(historyText)
-
-  // }
-
-  // const addHistory = text => {
-  //   addHistoryItem(settings.general.shellPrompt + " " + text)
-  //   addHiddenHistoryItem(text)
-  // }
-
-  const runCommand = () => {
-    let text = inputText
+  const runCommand2 = () => {
+    var text = inputText.trim().split(" ")
     const historyText = inputText
-    addHistoryItem(settings.general.shellPrompt + " " + historyText)
-    addHiddenHistoryItem(historyText)
+    addHistory(historyText)
 
-    const newTabindex = settings.aliases.newTabAliases.findIndex(nta => {
-      return text.startsWith(nta + " ")
-    })
+    if (text.length <= 0) {
+      resetInput()
+      return
+    }
 
-    const newTabFocusedIndex = settings.aliases.newTabFocusedAliases.findIndex(
-      ntf => {
-        return text.startsWith(ntf + " ")
-      }
+    if (settings.aliases.clearAliases.includes(text[0]) && text.length === 1) {
+      clearConsole()
+      resetInput()
+      return
+    } else if (
+      settings.aliases.closeAliases.includes(text[0]) &&
+      text.length === 1
+    ) {
+      resetInput()
+      window.close()
+      return
+    } else if (text[0] === "help") {
+      helpInfo()
+      resetInput()
+      return
+    }
+
+    var isNewTab = settings.aliases.newTabAliases.includes(text[0])
+    var isNewFocusedTab = settings.aliases.newTabFocusedAliases.includes(
+      text[0]
     )
 
-    const searchAliasesIndex = settings.aliases.searchAliases.findIndex(sa => {
-      return text.startsWith(sa.alias + " ")
-    })
-
-    if (searchAliasesIndex >= 0) {
-      console.log("found")
-      text = text.replace(
-        settings.aliases.searchAliases[searchAliasesIndex].alias + " ",
-        ""
-      )
-    }
-
-    if (newTabindex >= 0) {
-      text = text.replace(settings.aliases.newTabAliases[newTabindex] + " ", "")
-    }
-
-    if (newTabFocusedIndex >= 0) {
-      text = text.replace(
-        settings.aliases.newTabFocusedAliases[newTabFocusedIndex] + " ",
-        ""
-      )
-    }
-
-    if (settings.aliases.clearAliases.includes(text)) {
-      clearConsole()
-    } else if(text === "help") {
-      console.log("help")
-      helpInfo()
-    }else if (settings.aliases.closeAliases.includes(text)) {
-      window.close()
-    } else if (settings.aliases.newTabAliases.includes(text)) {
-      window.open(window.location.origin)
-    } else if (searchAliasesIndex >= 0) {
-      window.location.href =
-        settings.aliases.searchAliases[searchAliasesIndex].link + text
-    } else {
-      const i = settings.aliases.redirectAliases.findIndex(e => {
-        return e.aliases.includes(text)
-      })
-
-      if (i >= 0) {
-        if (newTabindex >= 0) {
-          window.open(settings.aliases.redirectAliases[i].link)
-        } else if (newTabFocusedIndex >= 0) {
-          window.open(window.location.origin)
-          window.location.href = settings.aliases.redirectAliases[i].link
-        } else {
-          window.location.href = settings.aliases.redirectAliases[i].link
-        }
+    if (isNewTab || isNewFocusedTab) {
+      if (text.length === 1) {
+        window.open(window.location.origin)
+        return
+      } else {
+        text.splice(0, 1)
       }
     }
 
+    const redirect_index = settings.aliases.redirectAliases.findIndex(e => {
+      return e.aliases.includes(text[0])
+    })
+    console.log(redirect_index)
+    const search_index = settings.aliases.searchAliases.findIndex(a => {
+      return a.alias.includes(text[0])
+    })
+
+    if (search_index >= 0) {
+      text.splice(0, 1)
+      const link =
+        settings.aliases.searchAliases[search_index].link + text.join(" ")
+
+      navigate(link, isNewTab, isNewFocusedTab)
+    } else if (redirect_index >= 0) {
+      let link
+
+      var shouldNavigate = true
+
+      if (text.length === 1) {
+        link = settings.aliases.redirectAliases[redirect_index].link
+      } else {
+        if (settings.aliases.redirectAliases[redirect_index].subAliases) {
+          var a = settings.aliases.redirectAliases[
+            redirect_index
+          ].subAliases.find(e => {
+            return e.subAlias === text[1] && text.length === 2
+          })
+          if (a) {
+            if (a.newUrl) {
+              link = a.newUrl
+            } else {
+              link =
+                settings.aliases.redirectAliases[redirect_index].link + a.dir
+            }
+          } else {
+            shouldNavigate = false
+          }
+        } else {
+          shouldNavigate = false
+        }
+      }
+
+      if (shouldNavigate) {
+        navigate(link, isNewTab, isNewFocusedTab)
+      }
+    }
+
+    resetInput()
+  }
+
+  const navigate = (link, isNewTab, isNewFocusedTab) => {
+    if (isNewTab) {
+      window.open(link)
+    } else if (isNewFocusedTab) {
+      window.open(window.location.origin)
+      window.location.href = link
+    } else {
+      window.location.href = link
+    }
+  }
+
+  const resetInput = () => {
     historyIndex.current = -1
     setInputText("")
+  }
+
+  const addHistory = text => {
+    addHistoryItem(settings.general.shellPrompt + " " + text)
+    addHiddenHistoryItem(text)
   }
 
   const helpInfo = () => {
@@ -185,18 +213,22 @@ export default function Home() {
     settings.aliases.redirectAliases.forEach(i => {
       helpLines.push(i.aliases.join(" , ") + " -->  " + i.link)
     })
-    
+
     helpLines.push("------------------------------------")
 
-    helpLines.push("Type the following followed by text to look for something in that website:")
+    helpLines.push(
+      "Type the following followed by text to look for something in that website:"
+    )
 
     settings.aliases.searchAliases.forEach(i => {
       if (i.alias !== "url") {
-        helpLines.push(i.alias +"  ---searches in---> " + new URL(i.link).hostname)
+        helpLines.push(
+          i.alias + "  ---searches in---> " + new URL(i.link).hostname
+        )
       }
     })
 
-    addHistoryItems( helpLines)
+    addHistoryItems(helpLines)
   }
 
   const runAutoComplete = () => {
@@ -261,11 +293,15 @@ export default function Home() {
   }
 
   const addHistoryItems = items => {
-    setHistory([...history,
-    ...items.map(i =>{ return {
-      key: Math.round(Math.random() * 1000000),
-      value: i,
-    }})])
+    setHistory([
+      ...history,
+      ...items.map(i => {
+        return {
+          key: Math.round(Math.random() * 1000000),
+          value: i,
+        }
+      }),
+    ])
   }
 
   const addHiddenHistoryItem = text => {
