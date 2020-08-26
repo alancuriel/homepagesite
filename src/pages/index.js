@@ -221,9 +221,9 @@ export default function Home() {
     )
 
     settings.aliases.searchAliases.forEach(i => {
-      if (i.alias !== "url") {
+      if (i.alias[0] !== "url") {
         helpLines.push(
-          i.alias + "  ---searches in---> " + new URL(i.link).hostname
+          i.alias[0] + "  ---searches in---> " + new URL(i.link).hostname
         )
       }
     })
